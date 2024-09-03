@@ -10,8 +10,8 @@
                 if(users.length > 0){
                     for(let i =0; i < users.length; i++){
                         %>
-                        <li class="list-group-item list-group-item-dark">
-                            <img src="<%= 'http://127.0.0.1:3000/'+users[i]['image'] %>" alt="" width="100px" height="100px">
+                        <li class="list-group-item list-group-item-dark cursor-pointer user-list">
+                            <img src="<%= 'http://127.0.0.1:3000/'+users[i]['image'] %>" alt="" width="50px" height="50px">
                             <%= users[i]['name'] %>
                         </li>
                         <%
@@ -23,8 +23,31 @@
 
     <div class="col-md-9">
 
+        <h3 class="start-head"> Click to start chatting</h3>
+        <div class="chat-section">
+
+            <div id="chat-container">
+
+            </div>
+
+            <form action="" id="chat-form">
+                <input type="text" name="message" placeholder="Enter message" id="message" class="border" required>
+                <input type="submit" value="Send Message" class="btn btn-primary">
+            </form>
+
+        </div>
+
     </div>
 
 </div>
+
+<script>
+    $(document).ready(function(){
+        $('.user-list').click(function(){
+            $('.start-head').hide();
+            $('.chat-section').show();
+        });
+    });
+</script>
 
 <%- include('layouts/footer.ejs') %>

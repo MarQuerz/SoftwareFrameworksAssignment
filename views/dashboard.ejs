@@ -42,6 +42,9 @@
 </div>
 
 <script>
+
+    var socket = io('/user-namespace');
+
     $(document).ready(function(){
         $('.user-list').click(function(){
             $('.start-head').hide();

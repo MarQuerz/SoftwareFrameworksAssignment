@@ -30,7 +30,45 @@ const register = async(req, res)=>{
     }
 }
 
+const loadLogin = async(req, res) =>{
+    try {
+
+        res.render('login');
+
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+const login = async(req, res) =>{
+    try {
+
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+const logout = async(req, res) =>{
+    try {
+
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+const loadDashboard = async(req, res) =>{
+    try {
+
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
 module.exports = {
     registerLoad,
-    register
+    register,
+    loadLogin,
+    login,
+    logout,
+    loadDashboard
 }

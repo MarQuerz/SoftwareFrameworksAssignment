@@ -134,6 +134,16 @@ const updateChat = async(req, res)=>{
     }
 }
 
+const loadGroups = async(req, res)=>{
+    try {
+
+        res.render('group');
+
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
 module.exports = {
     registerLoad,
     register,
@@ -143,5 +153,6 @@ module.exports = {
     loadDashboard,
     saveChat,
     deleteChat,
-    updateChat
+    updateChat,
+    loadGroups
 }

@@ -76,7 +76,7 @@
     </table>
 
     <!-- Member Modal -->
-  <div class="modal fade" id="memberModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<div class="modal fade" id="memberModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -85,42 +85,33 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-
+  
         <form action="" id="add-member-form">
-            <div class="modal-body">
-            
-                <input type="hidden" name="group_id" id="group_id">
-                <input type="hidden" name="limit" id="limit">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Select</th>
-                            <th>Name</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td colspan="2">
-                                <div class="addMemberTable">
-                                    <table class="table addMembersInTable">
-
-                                    </table>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-
-            </div>
-            <div class="modal-footer">
+          <div class="modal-body">
+            <input type="hidden" name="group_id" id="group_id">
+            <input type="hidden" name="limit" id="limit">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Select</th>
+                  <th>Name</th>
+                </tr>
+              </thead>
+              <tbody class="addMembersInTable">
+                
+              </tbody>
+            </table>
+          </div>
+          <div class="modal-footer">
             <p id="add-member-error"></p>
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             <button type="submit" class="btn btn-primary">Update Members</button>
-            </div>
+          </div>
         </form>
       </div>
     </div>
   </div>
+  
   
   <!-- Modal -->
   <div class="modal fade" id="createGroupModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">

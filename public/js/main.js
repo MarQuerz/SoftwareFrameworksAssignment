@@ -229,31 +229,29 @@ $('.addMember').click(function(){
 		type: 'POST',
 		data: { group_id: id },
 		success: function(res){
-			console.log(res);
-			if(res.success == true){
-				let users = res.data;
-				let html = '';
-
-				for(let i = 0; i < users.length; i++){
-
-					let isMemberOfGroup = users[i]['member'].length > 0?true: false;
-
-					html+=`
-						<tr>
-							<td>
-								<input type="checkbox" `+(isMemberOfGroup?'checked':'')+` name="members[]" value="`+users[i]['_id']+`"/>
-							</td>
-							<td>`+users[i]['name']+`</td>
-						</tr>
-					`;
-				}
-				$('.addMembersInTable').html(html);
+		  console.log('Response:', res); 
+		  if(res.success == true){
+			let users = res.data;
+			let html = '';
+	  
+			for(let i = 0; i < users.length; i++){
+			  let isMemberOfGroup = users[i]['member'].length > 0 ? true : false;
+			  html += `
+				<tr>
+				  <td>
+					<input type="checkbox" `+(isMemberOfGroup ? 'checked' : '')+` name="members[]" value="`+users[i]['_id']+`"/>
+				  </td>
+				  <td>`+users[i]['name']+`</td>
+				</tr>
+			  `;
 			}
-			else {
-				alert(res.msg);
-			}
+			$('.addMembersInTable').html(html);
+		  } else {
+			console.log('Error:', res.msg); 
+			alert(res.msg);
+		  }
 		}
-	});
+	  });	  
 });
 
 $('#add-member-form').submit(function(event){

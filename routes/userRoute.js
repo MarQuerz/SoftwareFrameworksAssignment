@@ -38,7 +38,7 @@ const userController = require('../controllers/userController');
 const auth = require('../middlewares/auth');
 
 user_route.get('/register', auth.isLogout, userController.registerLoad);
-user_route.post('/register', upload.single('image'),userController.register);
+user_route.post('/register', upload.single('image'), userController.register);
 
 user_route.get('/', auth.isLogout, userController.loadLogin);
 user_route.post('/', userController.login);
@@ -51,6 +51,7 @@ user_route.post('/delete-chat', userController.deleteChat);
 user_route.post('/update-chat', userController.updateChat);
 
 user_route.get('/groups', auth.isLogin, userController.loadGroups);
+user_route.post('/groups', upload.single('image'), userController.createGroups);
 
 user_route.get('*', function(req, res){
     res.redirect('/');

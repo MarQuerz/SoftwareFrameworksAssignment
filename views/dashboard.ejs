@@ -70,6 +70,18 @@
             $('.chat-section').show();
         });
     });
+
+    socket.on('getOnlineUser', function(data){
+        $('#'+data.user_id+'-status').text('Online');
+        $('#'+data.user_id+'-status').removeClass('offline-status');
+        $('#'+data.user_id+'-status').addClass('online-status');
+    });
+
+    socket.on('getOfflineUser', function(data){
+        $('#'+data.user_id+'-status').text('Offline');
+        $('#'+data.user_id+'-status').removeClass('online-status');
+        $('#'+data.user_id+'-status').addClass('offline-status');
+    });
 </script>
 
 <%- include('layouts/footer.ejs') %>

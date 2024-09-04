@@ -133,8 +133,10 @@
                     $('#message').val('');
                     let chat = response.data.message;
                     let html = `
-                    <div class="current-user-chat">
-                        <h5>`+chat+`</h5>
+                    <div class="current-user-chat" id='`+response.data._id+`'>
+                        <h5>`+chat+`
+                            <i class="fa fa-trash" aria-hidden="true" data-id='`+response.data._id+`' data-toggle="modal" data-target="#deleteChatModal"></i>;
+                        </h5>
                     </div>
                     `;
                     $('#chat-container').append(html);
@@ -152,7 +154,7 @@
     socket.on('loadNewChat', function(data){
         if(sender_id == data.receiver_id && receiver_id == data.sender_id){
             let html = `
-            <div class="distance-user-chat">
+            <div class="distance-user-chat" id='`+data.id+`'>
                 <h5>`+data.message+`</h5>
             </div>
             `;
@@ -179,9 +181,14 @@
             }
 
             html += `
-            <div class='`+addClass+`'>
-                <h5>`+chats[x]['message']+`
-                    <i class="fa fa-trash" aria-hidden="true"></i>
+            <div class='`+addClass+`' id='`+chats[x]['_id']+`'>
+                <h5>`+chats[x]['message']+``;
+
+            if(chats[x]['sender_id'] == sender_id){
+                html+=`<i class="fa fa-trash" aria-hidden="true" data-id='`+chats[x]['_id']+`' data-toggle="modal" data-target="#deleteChatModal"></i>`;
+            }
+
+            html+=`    
                 </h5>
             </div>
             `;

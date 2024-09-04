@@ -54,6 +54,33 @@
     </div>
 
 </div>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="deleteChatModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Delete Chat</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+
+        <form id="delete-chat-form">
+            <div class="modal-body">
+                <input type="text" name="id" id="delete-message-id">
+                <p>Are you sure you want to delete the below message?</p>
+                <p><b id="delete-message"></b></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
 
 <script>
 
@@ -112,6 +139,8 @@
                     `;
                     $('#chat-container').append(html);
                     socket.emit('newChat', response.data);
+
+                    scrollChat();
                 }
                 else {
                     alert(data.msg);
@@ -129,6 +158,7 @@
             `;
             $('#chat-container').append(html);
         }
+        scrollChat();
     });
 
     socket.on('loadChats', function(data){
@@ -150,12 +180,22 @@
 
             html += `
             <div class='`+addClass+`'>
-                <h5>`+chats[x]['message']+`</h5>
+                <h5>`+chats[x]['message']+`
+                    <i class="fa fa-trash" aria-hidden="true"></i>
+                </h5>
             </div>
             `;
         }
         $('#chat-container').append(html);
+
+        scrollChat();
     });
+
+    function scrollChat(){
+        $('#chat-container').animate({
+            scrollTop: $('#chat-container').offset().top + $('#chat-container')[0].scrollHeight
+        }, 0);
+    }
 
 </script>
 

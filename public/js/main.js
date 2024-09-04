@@ -243,7 +243,7 @@ $('.addMember').click(function(){
 							<td>
 								<input type="checkbox" `+(isMemberOfGroup?'checked':'')+` name="members[]" value="`+users[i]['_id']+`"/>
 							</td>
-							<td>`+users[1]['name']+`</td>
+							<td>`+users[i]['name']+`</td>
 						</tr>
 					`;
 				}

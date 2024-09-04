@@ -13,6 +13,20 @@
                         <li class="list-group-item list-group-item-dark cursor-pointer user-list">
                             <img src="<%= 'http://127.0.0.1:3000/'+users[i]['image'] %>" alt="" width="50px" height="50px">
                             <%= users[i]['name'] %>
+
+                            <%
+                                if(users[i]['is_online'] == 1){
+                                    %>
+                                        <sup class="online-status" id="<%= users[i]['_id'] %>-status">Online</sup>
+                                    <%
+                                }
+                                else {
+                                    %>
+                                        <sup class="offline-status" id="<%= users[i]['_id'] %>-status">Offline</sup>
+                                    <%
+                                }
+                            %>
+
                         </li>
                         <%
                     }

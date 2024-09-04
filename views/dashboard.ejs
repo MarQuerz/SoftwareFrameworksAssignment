@@ -68,13 +68,13 @@
 
         <form id="delete-chat-form">
             <div class="modal-body">
-                <input type="text" name="id" id="delete-message-id">
+                <input type="hidden" name="id" id="delete-message-id">
                 <p>Are you sure you want to delete the below message?</p>
                 <p><b id="delete-message"></b></p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="submit" class="btn btn-danger">Delete</button>
             </div>
         </form>
 
@@ -203,6 +203,39 @@
             scrollTop: $('#chat-container').offset().top + $('#chat-container')[0].scrollHeight
         }, 0);
     }
+
+    $(document).on('click', '.fa-trash', function(){
+        let msg = $(this).parent().text();
+        $('#delete-message').text(msg);
+
+        $('#delete-message-id').val($(this).attr('data-id'));
+    });
+
+    $('#delete-chat-form').submit(function(event){
+        event.preventDefault();
+
+        var id = $('#delete-message-id').val();
+
+        $.ajax({
+            url: '/delete-chat',
+            type: 'POST',
+            data: { id: id },
+            success: function(res){
+                if(res.success == true){
+                    $('#'+id).remove();
+                    $('#deleteChatModal').modal('hide');
+                    socket.emit('chatDeleted', id);
+                }
+                else{
+                    alert(res.msg);
+                }
+            }
+        });
+    });
+
+    socket.on('chatMessageDeleted', function(id){
+        $('#'+id).remove();
+    });
 
 </script>
 

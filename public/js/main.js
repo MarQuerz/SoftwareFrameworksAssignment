@@ -229,15 +229,19 @@ $('.addMember').click(function(){
 		type: 'POST',
 		data: { group_id: id },
 		success: function(res){
+			console.log(res);
 			if(res.success == true){
 				let users = res.data;
 				let html = '';
 
 				for(let i = 0; i < users.length; i++){
+
+					let isMemberOfGroup = users[i]['member'].length > 0?true: false;
+
 					html+=`
 						<tr>
 							<td>
-								<input type="checkbox" name="members[]" value="`+users[i]['_id']+`"/>
+								<input type="checkbox" `+(isMemberOfGroup?'checked':'')+` name="members[]" value="`+users[i]['_id']+`"/>
 							</td>
 							<td>`+users[1]['name']+`</td>
 						</tr>
@@ -247,6 +251,59 @@ $('.addMember').click(function(){
 			}
 			else {
 				alert(res.msg);
+			}
+		}
+	});
+});
+
+$('#add-member-form').submit(function(event){
+	event.preventDefault();
+
+	var formData = $(this).serialize();
+
+	$.ajax({
+		url:"/add-members",
+		type:"POST",
+		data: formData,
+		success: function(res){
+			if(res.success){
+				$('#memberModal').modal('hide');
+				$('#add-member-form')[0].reset();
+				alert(res.msg);
+			}
+			else {
+				$('#add-member-error').text(res.msg);
+				setTimeout(()=>{
+					$('#add-member-error').text('');
+				}, 3000);
+			}
+		}
+	});
+});
+
+$('.updateMember').click(function(){
+	var obj = JSON.parse($(this).attr('data-obj'));
+
+	$('#update_group_id').val(obj._id);
+	$('#last_limit').val(obj.limit);
+	$('#group_name').val(obj.name);
+	$('#group_limit').val(obj.limit);
+});
+
+$('#updateChatGroupForm').submit(function(e){
+	e.preventDefault();
+
+	$.ajax({
+		url:"/update-chat-group",
+		type: "POST",
+		data: new FormData(this),
+		contentType: false,
+		cache: false,
+		processData: false,
+		success: function(res){
+			alert(res.msg);
+			if(res.success){
+				location.reload();
 			}
 		}
 	});

@@ -1,7 +1,10 @@
 const User = require('../models/userModel');
 const Chat = require('../models/chatModel');
 const Group = require('../models/groupModel');
+const Member = require('../models/memberModel');
 const bcrypt = require('bcrypt');
+const mongoose = require("mongoose");
+
 
 const registerLoad = async(req, res)=>{
 
@@ -171,9 +174,106 @@ const createGroups = async(req, res)=>{
 const getMembers = async(req, res)=>{
     try {
         
-        var users = await User.find({ _id: { $nin:[req.session.user._id] }});
+        var users = await User.aggregate([
+            {
+                $lookup:{
+                    from: "members",
+                    localField: "_id",
+                    foreignField: "user_id",
+                    pipeline: [
+                        {
+                            $match: {
+                                $expr: {
+                                    $and: [
+                                        { $eq: [ "$group_id", mongoose.Types.ObjectId(req.body.group_id) ] }
+                                    ]
+                                }
+                            }
+                        }
+                    ],
+                    as: "member"
+                }
+            },
+            {
+                $match: { 
+                    "_id": { 
+                        $nin:[mongoose.Types.ObjectId(req.session.user._id)] 
+                    } 
+                }
+            }
+        ]);
 
         res.status(200).send({ success: true, data: users });
+    } catch (error) {
+        res.status(400).send({ success: false, msg: error.message });
+    }
+}
+
+const addMembers = async(req, res)=>{
+    try {
+        
+        if(!req.body.members){
+            res.status(200).send({ success: false, msg: 'Please select any one member' })
+        }
+        else if(req.body.members.length > parseInt(req.body.limit)){
+            res.status(200).send({ success: false, msg: 'You can not select more than '+req.body.limit+' Members' });
+        }
+        else {
+
+            await Member.deleteMany({ group_id: req.body.group_id });
+
+            var data = [];
+
+            const members = req.body.members;
+
+            for(let i = 0; i < members.length; i++){
+                data.push({
+                    group_id: req.body.group_id,
+                    user_id: members[i]
+                });
+            }
+
+            await Member.insertMany(data);
+
+            res.status(200).send({ success: true, msg: 'Members added successfully!' });
+        }
+
+    } catch (error) {
+        res.status(400).send({ success: false, msg: error.message });
+    }
+}
+
+const updateChatGroup = async(req, res) => {
+
+    try {
+
+        if(parseInt(req.body.limit) < parseInt(req.body.last_limit)) {
+            await Member.deleteMany({ grouo_id: req.body.id });
+        }
+
+        var updateObj;
+
+        if(req.file != undefined){
+            updateObj = {
+                name: req.body.name,
+                image: 'images/'+req.file.filename,
+                limit: req.body.limit,
+
+            }
+        }
+        else {
+            updateObj = {
+                name: req.body.name,
+                limit: req.body.limit
+            }
+        }
+
+        await Group.findByIdAndUpdate({ _id: req.body.id}, {
+            $set: updateObj
+        });
+
+        res.status(200).send({ success: true, msg: 'Chat Group updated successfully!' });
+
     } catch (error) {
         res.status(400).send({ success: false, msg: error.message });
     }
@@ -191,5 +291,7 @@ module.exports = {
     updateChat,
     loadGroups,
     createGroups,
-    getMembers
+    getMembers,
+    addMembers,
+    updateChatGroup
 }
